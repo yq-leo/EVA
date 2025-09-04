@@ -25,7 +25,7 @@ import scipy.sparse
 from scipy.sparse import coo_matrix, csr_matrix, lil_matrix
 import torch.nn.functional as F
 from transformers import AutoTokenizer
-sys.path.append('/data/xyyf/EVA')
+sys.path.append('/home/qiyu6/EVA')
 import model_info
 from model_info import models
 
@@ -209,7 +209,7 @@ def main():
             all_similarities[i, i] = 1.0
     #保存映射矩阵
     all_similarities = all_similarities.tocsr()
-    scipy.sparse.save_npz('/data/xyyf/EVA/sparse_matrix_filter/'+args.dictionary.split('/')[-1].split('-test')[0]+'_top-'+str(k)+'.npz', all_similarities)
+    scipy.sparse.save_npz('/home/qiyu6/EVA/sparse_matrix_filter/'+args.dictionary.split('/')[-1].split('-test')[0]+'_top-'+str(k)+'.npz', all_similarities)
     print('Finish similarity matrix')
 
 

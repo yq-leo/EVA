@@ -1,0 +1,94 @@
+[
+    {
+        "qText": "when was the last time a south american team won the world cup",
+        "answers": [
+            "2002"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: when was the last time a south american team won the world cup<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " Brazil won the FIFA World Cup in 2002",
+        "pred": "Brazil won the FIFA World Cup in 2002"
+    },
+    {
+        "qText": "what was the dust bowl in the great depression",
+        "answers": [
+            "a period of severe dust storms that greatly damaged the ecology and agriculture of the American and Canadian prairies during the 1930s"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: what was the dust bowl in the great depression<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " The Dust Bowl was a period of severe dust storms",
+        "pred": "The Dust Bowl was a period of severe dust storms"
+    },
+    {
+        "qText": "what factors led to the deadly smog in london in 1952",
+        "answers": [
+            "A period of cold weather , combined with an anticyclone and windless conditions",
+            "collected airborne pollutants"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: what factors led to the deadly smog in london in 1952<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " The deadly smog in London in 1952",
+        "pred": "The deadly smog in London in 1952"
+    },
+    {
+        "qText": "when did they take silver out of quarters",
+        "answers": [
+            "1965"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: when did they take silver out of quarters<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " They never took silver out of quarters. Quarters",
+        "pred": "They never took silver out of quarters. Quarters"
+    },
+    {
+        "qText": "who is the main character in catch 22",
+        "answers": [
+            "Captain John Yossarian"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: who is the main character in catch 22<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " The main character in \"Catch-22\"",
+        "pred": "The main character in \"Catch-22\""
+    },
+    {
+        "qText": "the probable extinction of the ivory-billed woodpecker was mainly driven by",
+        "answers": [
+            "Heavy logging activity exacerbated by hunting by collectors"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: the probable extinction of the ivory-billed woodpecker was mainly driven by<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " Habitat loss and fragmentation due to human activities",
+        "pred": "Habitat loss and fragmentation due to human activities"
+    },
+    {
+        "qText": "how many episodes in season 8 of game of thrones",
+        "answers": [
+            "six"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: how many episodes in season 8 of game of thrones<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " 6<eoa><0x0A>",
+        "pred": "6"
+    },
+    {
+        "qText": "who wrote the first opera what was it called",
+        "answers": [
+            "Jacopo Peri",
+            "Dafne"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: who wrote the first opera what was it called<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " The first opera is believed to be \"Daf",
+        "pred": "The first opera is believed to be \"Daf"
+    },
+    {
+        "qText": "which country scored the highest number of goals in the last world cup football tournament",
+        "answers": [
+            "Belgium"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: which country scored the highest number of goals in the last world cup football tournament<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " Germany. They scored 10 goals in the last",
+        "pred": "Germany. They scored 10 goals in the last"
+    },
+    {
+        "qText": "who won the national championship college football last year",
+        "answers": [
+            "Alabama Crimson Tide"
+        ],
+        "prompt": "<|User|>:Please answer the following question, your answer should be as simple as possible.\nQuestion: who won the national championship college football last year<eoh>\n<|Bot|>:Answer:",
+        "pred_all": " Alabama won the national championship in college football last year",
+        "pred": "Alabama won the national championship in college football last year"
+    }
+]

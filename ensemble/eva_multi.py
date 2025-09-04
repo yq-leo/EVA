@@ -7,11 +7,11 @@ import scipy.sparse as sp
 import torch.nn.functional as F
 import json
 import sys
-sys.path.append('/data/xyyf/EVA')
+sys.path.append('/home/qiyu6/EVA')
 import model_info
 from model_info import models, matrix_paths, prompt_schemas, inst_cot_prompts
 import task_info
-from task_info import save_dirs, max_new_tokens,get_test_df, get_dev_df,clean_answer
+from task_info import max_new_tokens,get_test_df, clean_answer
 from tqdm import tqdm
 device0 = 'cuda:0'
 device1 = 'cuda:1'
@@ -46,27 +46,32 @@ def gen_prompt(train_df, src, tgt, k=4):
         prompt += format_example(src, tgt, train_df["src"][i], train_df["tgt"][i])
     return prompt
 
-def build_inst_prompt(task, model, question):
-    if task == "gsm8k" or task == "addsub" or task == "asdiv":
-        prompt = inst_cot_prompts[model].format_map({"instruction": question})
-        return prompt
-    prompt_schema = prompt_schemas[model]
-    model_instruction_prefix = prompt_schema["instruction_prefix"]
-    model_instruction_suffix = prompt_schema["instruction_suffix"]
-    model_input_prefix = prompt_schema["input_prefix"]
-    model_input_suffix = prompt_schema["input_suffix"]
+# def build_inst_prompt(task, model, question):
+#     if task == "gsm8k" or task == "addsub" or task == "asdiv":
+#         prompt = inst_cot_prompts[model].format_map({"instruction": question})
+#         return prompt
+#     prompt_schema = prompt_schemas[model]
+#     model_instruction_prefix = prompt_schema["instruction_prefix"]
+#     model_instruction_suffix = prompt_schema["instruction_suffix"]
+#     model_input_prefix = prompt_schema["input_prefix"]
+#     model_input_suffix = prompt_schema["input_suffix"]
 
-    if task == 'nq' or task == 'triviaqa':
-        instruction = "Please answer the following question, your answer should be as simple as possible.\n"
-        inputs = "Question: " + question
-        prompt = model_instruction_prefix + instruction + model_instruction_suffix + \
-        model_input_prefix + inputs + model_input_suffix + "Answer:"
-    elif task == 'e2e':
-        instruction = "Please describe all aspects of the restaurant in one sentence based on the following information.\n"
-        inputs = "Information: " + question
-        prompt = model_instruction_prefix + instruction + model_instruction_suffix + \
-        model_input_prefix + inputs + model_input_suffix + "Restaurant description:"
-    return prompt
+#     if task == 'nq' or task == 'triviaqa':
+#         instruction = "Please answer the following question, your answer should be as simple as possible.\n"
+#         inputs = "Question: " + question
+#         prompt = model_instruction_prefix + instruction + model_instruction_suffix + \
+#         model_input_prefix + inputs + model_input_suffix + "Answer:"
+#     elif task == 'e2e':
+#         instruction = "Please describe all aspects of the restaurant in one sentence based on the following information.\n"
+#         inputs = "Information: " + question
+#         prompt = model_instruction_prefix + instruction + model_instruction_suffix + \
+#         model_input_prefix + inputs + model_input_suffix + "Restaurant description:"
+#     return prompt
+
+
+def build_inst_prompt(task, model, question):
+    pass
+
 
 def topk_filter(logits, top_k=40):
     filter_value = -float("Inf")
@@ -216,7 +221,7 @@ def main(args):
 
     #主模型
     model_ckpt = models[args.model]
-    tokenizer = AutoTokenizer.from_pretrained(model_ckpt, use_fast=False,add_bos_token=False, model_max_length=4096,padding_side="left",trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_ckpt, use_fast=False,add_bos_token=False, model_max_length=4096, padding_side="left",trust_remote_code=True)
     config = AutoConfig.from_pretrained(model_ckpt, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(model_ckpt, config=config, torch_dtype=torch.bfloat16,trust_remote_code=True, low_cpu_mem_usage=True).to(device0)
 
@@ -278,7 +283,7 @@ if __name__ == "__main__":
     parser.add_argument("--topk", type=int, default=320, help="A list of lambdas")
     parser.add_argument("--drop", type=int, default=5)
     parser.add_argument("--aux_lambda", nargs="+", type=float, help="A list of lambdas")
-    parser.add_argument("--save_dir", type=str, default="/data/xyyf/EVA/ensemble/results")
+    parser.add_argument("--save_dir", type=str, default="/home/qiyu6/EVA/ensemble/results")
     parser.add_argument("--src", type=str, default="zho_simpl")
     parser.add_argument("--tgt", type=str, default="eng")
     args = parser.parse_args()

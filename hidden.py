@@ -1,6 +1,6 @@
 import sys
-root="/data/xyyf/EVA"
-sys.path.append(root)
+# root="/home/qiyu6/EVA"
+# sys.path.append(root)
 import model_info
 from model_info import models, module_names, vocab_sizes
 from transformers import AutoModelForCausalLM
@@ -13,7 +13,7 @@ def main(args):
     model = AutoModelForCausalLM.from_pretrained(model_ckpt, trust_remote_code=True,low_cpu_mem_usage=True)
     specific_module_parameters = model.state_dict()[specific_module_name].numpy()
 
-    save_file = "/data/xyyf/EVA/map_file/"
+    save_file = "map_file/"
     with open(save_file+ model_name +".emb","w") as f:
         for i in range(vocab_sizes[model_name]):
             token = str(i)

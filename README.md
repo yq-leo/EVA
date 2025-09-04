@@ -30,7 +30,7 @@ Source code for the NAACL 2024 long paper [Bridging the Gap between Different Vo
   ```shell
   model1=llama2
   model2=baichuan2
-  python /data/xyyf/EVA/vecmap/map_embeddings.py --supervised $root/map_file/${model1}-${model2}.dict $root/map_idx_all/${model1}.emb $root/map_file/${model2}.emb $root/map_file/${model1}_${model2}/${model1}_mapped_sup.emb $root/map_file/${model1}_${model2}/${model2}_mapped_sup.emb
+  python /home/qiyu6/EVA/vecmap/map_embeddings.py --supervised $root/map_file/${model1}-${model2}.dict $root/map_idx_all/${model1}.emb $root/map_file/${model2}.emb $root/map_file/${model1}_${model2}/${model1}_mapped_sup.emb $root/map_file/${model1}_${model2}/${model2}_mapped_sup.emb
   ```
 
 + Get similarity matrix
@@ -38,7 +38,7 @@ Source code for the NAACL 2024 long paper [Bridging the Gap between Different Vo
   ```shell
   model1=llama2
   model2=baichuan2
-  python /data/xyyf/EVA/vecmap/eval_translation_scipy_matrix.py $root/map_file/${model1}_${model2}/${model1}_mapped_sup.emb $root/map_file/${model1}_${model2}/${model2}_mapped_sup.emb -d $root/map_file/${model1}-${model2}-test.dict --retrieval csls --cuda --neighborhood 1 --precision fp32
+  python /home/qiyu6/EVA/vecmap/eval_translation_scipy_matrix.py $root/map_file/${model1}_${model2}/${model1}_mapped_sup.emb $root/map_file/${model1}_${model2}/${model2}_mapped_sup.emb -d $root/map_file/${model1}-${model2}-test.dict --retrieval csls --cuda --neighborhood 1 --precision fp32
   ```
 
 ### Step2: LLMs Ensemble

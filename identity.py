@@ -1,20 +1,19 @@
 from transformers import AutoTokenizer
 import sys
-root="/data/xyyf/EVA"
-sys.path.append(root)
-import model_info
+# root="/home/qiyu6/EVA"
+# sys.path.append(root)
 from model_info import models, vocab_sizes
 import argparse
 
-save_file = "/data/xyyf/EVA/map_file/"
+save_file = "map_file/"
 def main(args):
-    model_name1 = args.model1#"llama2"
+    model_name1 = args.model1 # "llama2"
     model_ckpt1 = models[model_name1]
     tokenizer1 = AutoTokenizer.from_pretrained(model_ckpt1, trust_remote_code=True)
     src = set(tokenizer1.get_vocab().keys())
     src_dict = tokenizer1.get_vocab()
 
-    model_name2 = args.model2#"baichuan2"
+    model_name2 = args.model2 # "baichuan2"
     model_ckpt2 = models[model_name2]
     tokenizer2 = AutoTokenizer.from_pretrained(model_ckpt2, trust_remote_code=True)
     tgt = set(tokenizer2.get_vocab().keys())

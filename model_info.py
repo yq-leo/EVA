@@ -11,68 +11,68 @@ matrix_paths = dict()
 
 #7b models
 #llama2-7b-chat
-models["llama2"] = "/data/xyyf/models/llama2-7b-chat-hf"
-module_names["llama2"] = "lm_head.weight"#[32000, 4096]
+models["llama2"] = "meta-llama/Llama-2-7b-chat-hf"
+module_names["llama2"] = "lm_head.weight" #[32000, 4096]
 vocab_sizes["llama2"] = 32000
 matrix_paths["llama2"] = {
     "chatglm2":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/chatglm2-llama2_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/chatglm2-llama2_top-10.npz",
     },
     "baichuan2":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/baichuan2-llama2_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/baichuan2-llama2_top-10.npz",
     },
     "internlm":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/internlm-llama2_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/internlm-llama2_top-10.npz",
     },
 }
 
 
 #baichuan2-7b-chat
 models["baichuan2"] = "/data/xyyf/models/baichuan2-7b-chat"
-module_names["baichuan2"] = "lm_head.weight"#[125696, 4096]
+module_names["baichuan2"] = "lm_head.weight" #[125696, 4096]
 vocab_sizes["baichuan2"] = 125696
 matrix_paths["baichuan2"] = {
     "chatglm2":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/chatglm2-baichuan2_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/chatglm2-baichuan2_top-10.npz",
     },
     "llama2":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/llama2-baichuan2_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/llama2-baichuan2_top-10.npz",
     },
     "internlm":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/internlm-baichuan2_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/internlm-baichuan2_top-10.npz",
     },
 }
 
 
 #chatglm2-6b
 models["chatglm2"] = "/data/xyyf/models/chatglm2-6b"
-module_names["chatglm2"] = "transformer.output_layer.weight"#[65024, 4096]
+module_names["chatglm2"] = "transformer.output_layer.weight" #[65024, 4096]
 vocab_sizes["chatglm2"] = 65024
 matrix_paths["chatglm2"] = {
     "baichuan2":{ 
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/baichuan2-chatglm2_top-10.npz"    
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/baichuan2-chatglm2_top-10.npz"    
     },
     "internlm":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/internlm-chatglm2_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/internlm-chatglm2_top-10.npz",
     },
     "llama2":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/llama2-chatglm2_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/llama2-chatglm2_top-10.npz",
     },
 }
 
 #internlm-chat-v1.1
-models["internlm"] = "/data/xyyf/models/internlm-chat-7b-v1_1"
-module_names["internlm"] = "lm_head.weight"#[103168, 4096]
+models["internlm"] = "internlm/internlm-chat-7b"
+module_names["internlm"] = "lm_head.weight" #[103168, 4096]
 vocab_sizes["internlm"] = 103168
 matrix_paths["internlm"] = {
     "baichuan2":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/baichuan2-internlm_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/baichuan2-internlm_top-10.npz",
     },
     "llama2":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/llama2-internlm_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/llama2-internlm_top-10.npz",
     },
     "chatglm2":{
-        "filter":"/data/xyyf/EVA/sparse_matrix_filter/chatglm2-internlm_top-10.npz",
+        "filter":"/home/qiyu6/EVA/sparse_matrix_filter/chatglm2-internlm_top-10.npz",
     },
 }
 

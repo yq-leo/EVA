@@ -6,7 +6,7 @@ import re
 
 #最大生成长度
 max_new_tokens = {
-    "nq": 32,
+    "nq": 10,
     "triviaqa": 32,
     "e2e":64,
     "addsub":256,
@@ -19,10 +19,17 @@ max_new_tokens = {
 #数据集加载
 def get_test_df(task):
     if task == 'nq':
-        test_data = load_from_disk("/data/xyyf/102-vocab/dataset/nq_open/validation")
         test_df = []
-        for line in test_data:
-            test_df.append({"qText":line['question'],"answers":line['answer']})
+        with open("datasets/nq/validation/data.jsonl", "r", encoding="utf-8") as f:
+            for line in f:
+                data = json.loads(line)
+                q = data.get("question")
+                a = data.get("answer")  # could be str or list
+                test_df.append({"qText": q, "answers": a})
+        # test_data = load_from_disk("datasets/nq/validation")
+        # test_df = []
+        # for line in test_data:
+        #     test_df.append({"qText":line['question'],"answers":line['answer']})
     elif task == "triviaqa":
         test_data = load_from_disk("/data/xyyf/102-vocab/dataset/trivia_qa/rc")['validation']
         test_df = []
