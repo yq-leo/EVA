@@ -2,19 +2,25 @@ from transformers import AutoTokenizer
 import sys
 # root="/home/qiyu6/EVA"
 # sys.path.append(root)
-from model_info import models, vocab_sizes
 import argparse
+import json
+import os
 
 save_file = "map_file/"
+if not os.path.exists(save_file):
+    os.makedirs(save_file)
+
 def main(args):
+    llms_config = json.load(open("confs/LLMs.json"))
+
     model_name1 = args.model1 # "llama2"
-    model_ckpt1 = models[model_name1]
+    model_ckpt1 = llms_config[model_name1]["model"]
     tokenizer1 = AutoTokenizer.from_pretrained(model_ckpt1, trust_remote_code=True)
     src = set(tokenizer1.get_vocab().keys())
     src_dict = tokenizer1.get_vocab()
 
     model_name2 = args.model2 # "baichuan2"
-    model_ckpt2 = models[model_name2]
+    model_ckpt2 = llms_config[model_name2]["model"]
     tokenizer2 = AutoTokenizer.from_pretrained(model_ckpt2, trust_remote_code=True)
     tgt = set(tokenizer2.get_vocab().keys())
     tgt_dict = tokenizer2.get_vocab()
@@ -28,8 +34,10 @@ def main(args):
             f.write(str(0) + " " + str(0) + "\n")
             f.write(str(1) + " " + str(1) + "\n")
             f.write(str(2) + " " + str(2) + "\n")
+        
+    vocab_size1 = tokenizer1.vocab_size
     with open(save_file+model_name1+"-"+model_name2+"-test.dict","w") as f:
-        for i in range(vocab_sizes[model_name1]):
+        for i in range(vocab_size1):
             f.write(str(i) + " " + str(0) + "\n")
 
 parser = argparse.ArgumentParser()

@@ -1,0 +1,52 @@
+{
+    "LLaMA3": {
+        "model": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "prompt_schema": {
+            "instruction_prefix": "[INST] <<SYS>>\n",
+            "instruction_suffix": "<</SYS>>\n\n",
+            "input_prefix": "",
+            "input_suffix": " [/INST]"
+        },
+        "inst_cot_prompts": "[INST] <<SYS>>\nPlease solve the following math problem:\n<</SYS>>\n\nQuestion: {instruction} [/INST] Answer: Let's think step by step."
+    },
+    "InternLM7b": {
+        "model": "internlm/internlm2_5-7b-chat",
+        "prompt_schema": {
+            "instruction_prefix": "[INST] <<SYS>>\n",
+            "instruction_suffix": "<</SYS>>\n\n",
+            "input_prefix": "",
+            "input_suffix": " [/INST]"
+        },
+        "inst_cot_prompts": "<|User|>:Please solve the following math problem:\nQuestion: {instruction}<eoh>\n<|Bot|>:Answer: Let's think step by step."
+    },
+    "Mistral": {
+        "model": "mistralai/Mistral-7B-Instruct-v0.1",
+        "prompt_schema": {
+            "instruction_prefix": "[INST] <<SYS>>\n",
+            "instruction_suffix": "<</SYS>>\n\n",
+            "input_prefix": "",
+            "input_suffix": " [/INST]"
+        },
+        "inst_cot_prompts": "[INST] <<SYS>>\nPlease solve the following math problem:\n<</SYS>>\n\nQuestion: {instruction} [/INST] Answer: Let's think step by step."
+    },
+    "qwen4b": {
+        "model": "Qwen/Qwen3-4B-Instruct-2507",
+        "prompt_schema": {
+            "instruction_prefix": "[INST] <<SYS>>\n",
+            "instruction_suffix": "<</SYS>>\n\n",
+            "input_prefix": "",
+            "input_suffix": " [/INST]"
+        },
+        "inst_cot_prompts": "[INST] <<SYS>>\nPlease solve the following math problem:\n<</SYS>>\n\nQuestion: {instruction} [/INST] Answer: Let's think step by step."
+    },
+    "OpenChat": {
+        "model": "openchat/openchat-3.5-0106",
+        "prompt_schema": {
+            "instruction_prefix": "[INST] <<SYS>>\n",
+            "instruction_suffix": "<</SYS>>\n\n",
+            "input_prefix": "",
+            "input_suffix": " [/INST]"
+        },
+        "inst_cot_prompts": "[INST] <<SYS>>\nPlease solve the following math problem:\n<</SYS>>\n\nQuestion: {instruction} [/INST] Answer: Let's think step by step."
+    }
+}

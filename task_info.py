@@ -7,34 +7,34 @@ import re
 #最大生成长度
 max_new_tokens = {
     "nq": 10,
-    "triviaqa": 32,
-    "e2e":64,
-    "addsub":256,
-    "asdiv":256,
-    "gsm8k":256,
-    "flores":128,
+    "triviaqa": 10,
+    # "e2e":64,
+    # "addsub":256,
+    # "asdiv":256,
+    "gsm8k":512,
+    # "flores":128,
 }
 
 
 #数据集加载
-def get_test_df(task):
+def get_test_df(task, run_mode="dev"):
     if task == 'nq':
         test_df = []
-        with open("datasets/nq/validation/data.jsonl", "r", encoding="utf-8") as f:
+        with open("/home/qiyu6/EVA/datasets/NaturalQuestions/dev/v1.0-simplified_simplified-nq-train.simpled_dev_100000_sample1600_seed42.jsonl", "r", encoding="utf-8") as f:
             for line in f:
                 data = json.loads(line)
                 q = data.get("question")
                 a = data.get("answer")  # could be str or list
-                test_df.append({"qText": q, "answers": a})
+                test_df.append({"question": q, "answers": a})
         # test_data = load_from_disk("datasets/nq/validation")
         # test_df = []
         # for line in test_data:
-        #     test_df.append({"qText":line['question'],"answers":line['answer']})
+        #     test_df.append({"question":line['question'],"answers":line['answer']})
     elif task == "triviaqa":
         test_data = load_from_disk("/data/xyyf/102-vocab/dataset/trivia_qa/rc")['validation']
         test_df = []
         for line in test_data:
-            test_df.append({"qText":line['question'],"answers":line['answer']['aliases']})
+            test_df.append({"question":line['question'],"answers":line['answer']['aliases']})
     elif task == "addsub":
         test_data = load_from_disk("/data/xyyf/102-vocab/dataset/allenai/lila")['test']
         test_data = test_data.filter(lambda example: example['dataset'] == 'addsub.json')
