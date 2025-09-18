@@ -5,62 +5,85 @@ import re
 
 
 #最大生成长度
-max_new_tokens = {
-    "nq": 10,
-    "triviaqa": 10,
-    # "e2e":64,
-    # "addsub":256,
-    # "asdiv":256,
-    "gsm8k":512,
-    # "flores":128,
-}
+# max_new_tokens = {
+#     "nq": 10,
+#     "triviaqa": 10,
+#     # "e2e":64,
+#     # "addsub":256,
+#     # "asdiv":256,
+#     "gsm8k":512,
+#     # "flores":128,
+# }
 
 
 #数据集加载
-def get_test_df(task, run_mode="dev"):
-    if task == 'nq':
-        test_df = []
-        with open("/home/qiyu6/EVA/datasets/NaturalQuestions/dev/v1.0-simplified_simplified-nq-train.simpled_dev_100000_sample1600_seed42.jsonl", "r", encoding="utf-8") as f:
-            for line in f:
-                data = json.loads(line)
+# def get_test_df(task, run_mode, task_config):
+#     if task == 'NQ':
+#         test_df = []
+#         with open(task_config['file_path'][f'{run_mode}_file_path'], "r", encoding="utf-8") as f:
+#             for line in f:
+#                 data = json.loads(line)
+#                 q = data.get("question")
+#                 a = data.get("answer")  # could be str or list
+#                 test_df.append({"question": q, "answers": a})
+#         # test_data = load_from_disk("datasets/nq/validation")
+#         # test_df = []
+#         # for line in test_data:
+#         #     test_df.append({"question":line['question'],"answers":line['answer']})
+#     elif task == "triviaqa":
+#         test_data = load_from_disk("/data/xyyf/102-vocab/dataset/trivia_qa/rc")['validation']
+#         test_df = []
+#         for line in test_data:
+#             test_df.append({"question":line['question'],"answers":line['answer']['aliases']})
+#     elif task == "addsub":
+#         test_data = load_from_disk("/data/xyyf/102-vocab/dataset/allenai/lila")['test']
+#         test_data = test_data.filter(lambda example: example['dataset'] == 'addsub.json')
+#         test_df = []
+#         for line in test_data:
+#             test_df.append(line)
+#     elif task == "asdiv":
+#         test_data = load_from_disk("/data/xyyf/102-vocab/dataset/allenai/lila")['test']
+#         test_data = test_data.filter(lambda example: example['dataset'] == 'asdiv.json')
+#         test_df = []
+#         for line in test_data:
+#             test_df.append(line)
+#     elif task == 'gsm8k':
+#         with open(os.path.join("/data/xyyf/001-corpus/gsm8k/grade-school-math-master/grade_school_math/data/test.jsonl"), "r", encoding="utf-8") as f:
+#             test_df = []
+#             for line in f:
+#                 test_df.append(json.loads(line))
+#     elif task == 'e2e':
+#         test_data = load_from_disk("/data/xyyf/102-vocab/dataset/e2e_nlg")['test']
+#         test_df = []
+#         for line in test_data:
+#             test_df.append({"concepts":line['meaning_representation'],"target":line['human_reference']})
+            
+#     return test_df
+
+
+def get_test_df(task, run_mode, task_config):
+    test_df = []
+    with open(task_config['file_path'][f'{run_mode}_file_path'], "r", encoding="utf-8") as f:
+        for line in f:
+            data = json.loads(line)
+
+            if task == "NQ" or task == "TriviaQA":
                 q = data.get("question")
                 a = data.get("answer")  # could be str or list
                 test_df.append({"question": q, "answers": a})
-        # test_data = load_from_disk("datasets/nq/validation")
-        # test_df = []
-        # for line in test_data:
-        #     test_df.append({"question":line['question'],"answers":line['answer']})
-    elif task == "triviaqa":
-        test_data = load_from_disk("/data/xyyf/102-vocab/dataset/trivia_qa/rc")['validation']
-        test_df = []
-        for line in test_data:
-            test_df.append({"question":line['question'],"answers":line['answer']['aliases']})
-    elif task == "addsub":
-        test_data = load_from_disk("/data/xyyf/102-vocab/dataset/allenai/lila")['test']
-        test_data = test_data.filter(lambda example: example['dataset'] == 'addsub.json')
-        test_df = []
-        for line in test_data:
-            test_df.append(line)
-    elif task == "asdiv":
-        test_data = load_from_disk("/data/xyyf/102-vocab/dataset/allenai/lila")['test']
-        test_data = test_data.filter(lambda example: example['dataset'] == 'asdiv.json')
-        test_df = []
-        for line in test_data:
-            test_df.append(line)
-    elif task == 'gsm8k':
-        with open(os.path.join("/data/xyyf/001-corpus/gsm8k/grade-school-math-master/grade_school_math/data/test.jsonl"), "r", encoding="utf-8") as f:
-            test_df = []
-            for line in f:
-                test_df.append(json.loads(line))
-    elif task == 'e2e':
-        test_data = load_from_disk("/data/xyyf/102-vocab/dataset/e2e_nlg")['test']
-        test_df = []
-        for line in test_data:
-            test_df.append({"concepts":line['meaning_representation'],"target":line['human_reference']})
+            elif task == "PIQA":
+                q = data.get("question")
+                choice_A = data.get("A")
+                choice_B = data.get("B")
+                a = data.get("answer")  # could be str or list
+                test_df.append({"question": q + "\nA. " + choice_A + "\nB. " + choice_B, "answers": a})
+            else:
+                raise ValueError(f"Unsupported task in get_test_df: {task}")
     return test_df
 
+
 def clean_answer(task, input_text):
-    if task == 'nq' or task == 'triviaqa':
+    if task == 'NQ' or task == 'TriviaQA' or task == 'PIQA':
         clean_text = input_text.strip().split('\n')[0].split('<eoa>')[0].strip()
     elif task == 'e2e':
         clean_text = input_text.strip().split('\n')[0].split('<eoa>')[0].strip()

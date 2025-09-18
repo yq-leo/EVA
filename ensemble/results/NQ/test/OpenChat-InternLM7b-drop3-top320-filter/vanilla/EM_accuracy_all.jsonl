@@ -1,0 +1,5 @@
+{"accuracy": "25.40", "num_total": 3610, "num_correct": 917, "sys_file_path": "ensemble/results/NQ/test/OpenChat-InternLM7b-drop3-top320-filter/vanilla/pred.jsonl"}
+{"accuracy": "25.40", "num_total": 3610, "num_correct": 917, "sys_file_path": "ensemble/results/NQ/test/OpenChat-InternLM7b-drop3-top320-filter/vanilla/pred.jsonl"}
+{"accuracy": "24.79", "num_total": 3610, "num_correct": 895, "sys_file_path": "ensemble/results/NQ/test/OpenChat-InternLM7b-drop3-top320-filter/vanilla/pred.jsonl"}
+{"accuracy": "24.79", "num_total": 3610, "num_correct": 895, "sys_file_path": "ensemble/results/NQ/test/OpenChat-InternLM7b-drop3-top320-filter/vanilla/pred.jsonl"}
+{"accuracy": "24.79", "num_total": 3610, "num_correct": 895, "sys_file_path": "ensemble/results/NQ/test/OpenChat-InternLM7b-drop3-top320-filter/vanilla/pred.jsonl"}

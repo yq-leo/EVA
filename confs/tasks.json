@@ -1,0 +1,35 @@
+{
+    "NQ": {
+        "file_path": {
+            "dev_file_path": "/home/qiyu6/EVA/datasets/NaturalQuestions/dev/v1.0-simplified_simplified-nq-train.simpled_dev_100000_sample1600_seed42.jsonl",
+            "test_file_path": "/home/qiyu6/EVA/datasets/NaturalQuestions/test/natural-questions.jsonl",
+            "prompt_path": "/home/qiyu6/EVA/datasets/NaturalQuestions/prompt.txt"
+        },
+        "run_parameter": {
+            "max_new_tokens": 10,
+            "per_device_batch_size": 1
+        }
+    },
+    "PIQA": {
+        "file_path": {
+            "dev_file_path": "/home/qiyu6/EVA/datasets/PIQA/physicaliqa-train-dev/train_our.jsonl",
+            "test_file_path": "/home/qiyu6/EVA/datasets/PIQA/physicaliqa-train-dev/dev_our.jsonl",
+            "prompt_path": "/home/qiyu6/EVA/datasets/PIQA/prompt.txt"
+        },
+        "run_parameter": {
+            "max_new_tokens": 1,
+            "per_device_batch_size": 1
+        }
+    },
+    "TriviaQA": {
+        "file_path": {
+            "dev_file_path": "/home/qiyu6/EVA/datasets/TriviaQA/wikipedia-dev-1900.jsonl",
+            "test_file_path": "/home/qiyu6/EVA/datasets/TriviaQA/wikipedia-test-6000.jsonl",
+            "prompt_path": "/home/qiyu6/EVA/datasets/TriviaQA/prompt.txt"
+        },
+        "run_parameter": {
+            "max_new_tokens": 10,
+            "per_device_batch_size": 1
+        }
+    }
+}

@@ -1,0 +1,2 @@
+{"accuracy": "64.63", "num_total": 1900, "num_correct": 1228, "sys_file_path": "ensemble/results/TriviaQA/dev/OpenChat-InternLM7b-drop3-top320-filter/vanilla/pred.jsonl"}
+{"accuracy": "64.63", "num_total": 1900, "num_correct": 1228, "sys_file_path": "ensemble/results/TriviaQA/dev/OpenChat-InternLM7b-drop3-top320-filter/vanilla/pred.jsonl"}

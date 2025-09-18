@@ -1,0 +1,1 @@
+{"accuracy": "86.94", "num_total": 1838, "num_correct": 1598, "sys_file_path": "ensemble/results/PIQA/test/InternLM7b-LLaMA3-drop3-top320-filter/tas2+mas2/pred.jsonl"}
