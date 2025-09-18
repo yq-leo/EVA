@@ -93,7 +93,7 @@ def build_inst_prompt(task, model, question, llms_config, task_config):
 
     if task == "NQ" or task == "TriviaQA" or task == "GSM8K":
         inputs = "Question:" + question
-    elif task == "PIQA":
+    elif task == "PIQA" or task == "ARC-c" or task == "MMLU":
         inputs = question
     else:
         raise ValueError("ERROR: task not supported")
@@ -407,23 +407,24 @@ def main(args, task_config):
                 f.write(pred+'\n')
     else:
         test_df = get_test_df(args.task, args.run_mode, task_config)
-        predictions = eval_local(args, model, model_aux_list0, model_aux_list1, tokenizer, tokenizer_aux_list, sparse_matrix_list, test_df, llms_config=llms_config, task_config=task_config)
-        pred_file = os.path.join(args.save_dir, mode_str, args.ensemble_method, 'pred.jsonl')
-        with open(pred_file, "w", encoding='utf-8') as f:
-            for pred, obj in zip(predictions, test_df):
-                obj["prompt"] = pred["prompt"]
-                obj["pred_all"] = pred["pred_all"]
-                obj["prediction"] = clean_answer(args.task, pred["pred_all"])
+        eval_local(args, model, model_aux_list0, model_aux_list1, tokenizer, tokenizer_aux_list, sparse_matrix_list, test_df, llms_config=llms_config, task_config=task_config)
+        
+        # pred_file = os.path.join(args.save_dir, mode_str, args.ensemble_method, 'pred.jsonl')
+        # with open(pred_file, "w", encoding='utf-8') as f:
+        #     for pred, obj in zip(predictions, test_df):
+        #         obj["prompt"] = pred["prompt"]
+        #         obj["pred_all"] = pred["pred_all"]
+        #         obj["prediction"] = clean_answer(args.task, pred["pred_all"])
 
-                row = {
-                    "answers": obj.get("answers"),
-                    "prediction": obj.get("prediction"),
-                    "question": obj.get("question"),
-                    "prompt": obj.get("prompt"),
-                    "pred_all": obj.get("pred_all"),   
-                }
+        #         row = {
+        #             "answers": obj.get("answers"),
+        #             "prediction": obj.get("prediction"),
+        #             "question": obj.get("question"),
+        #             "prompt": obj.get("prompt"),
+        #             "pred_all": obj.get("pred_all"),   
+        #         }
 
-                f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        #         f.write(json.dumps(row, ensure_ascii=False) + "\n")
                 
     if args.aux_method == 'drop':
         with open(os.path.join(args.save_dir, mode_str, 'count_num.txt'),'w',encoding='utf-8') as f:

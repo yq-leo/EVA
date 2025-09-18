@@ -32,6 +32,17 @@
             "per_device_batch_size": 1
         }
     },
+    "ARC-c": {
+        "file_path": {
+            "dev_file_path": "/home/qiyu6/EVA/datasets/ARC-Challenge/train.jsonl",
+            "test_file_path": "/home/qiyu6/EVA/datasets/ARC-Challenge/test.jsonl",
+            "prompt_path": "/home/qiyu6/EVA/datasets/ARC-Challenge/prompt.txt"
+        },
+        "run_parameter": {
+            "max_new_tokens": 1,
+            "per_device_batch_size": 1
+        }
+    },
     "GSM8K": {
         "file_path": {
             "dev_file_path": "/home/qiyu6/EVA/datasets/GSM/data/train_sample300_seed42.cleand.jsonl",
@@ -40,6 +51,17 @@
         },
         "run_parameter": {
             "max_new_tokens": 512,
+            "per_device_batch_size": 1
+        }
+    },
+    "MMLU": {
+        "file_path": {
+            "dev_file_path": "/home/qiyu6/EVA/datasets/MMLU/val-jsonl",
+            "test_file_path": "/home/qiyu6/EVA/datasets/MMLU/test-jsonl",
+            "prompt_path": "/home/qiyu6/EVA/datasets/MMLU/prompt.txt"
+        },
+        "run_parameter": {
+            "max_new_tokens": 1,
             "per_device_batch_size": 1
         }
     }

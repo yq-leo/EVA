@@ -63,6 +63,30 @@ import re
 
 def get_test_df(task, run_mode, task_config):
     test_df = []
+
+    if task == "MMLU":
+        input_dir = task_config['file_path'][f'{run_mode}_file_path']
+        input_file_list = os.listdir(input_dir)
+        input_file_list.sort()
+        for input_file in input_file_list:
+            if not input_file.endswith('.jsonl'):
+                continue
+            with open(os.path.join(input_dir, input_file), "r", encoding="utf-8") as f:
+                for line in f:
+                    data = json.loads(line)
+                    q = data.get("question")
+                    domain = data.get("domain")
+                    choice_A = data.get("A")
+                    choice_B = data.get("B")
+                    choice_C = data.get("C")
+                    choice_D = data.get("D")
+                    a = data.get("answer")  # could be str or list
+                    test_df.append({
+                        "question": f"There is a single choice question about {domain}. Answer the question by replying A, B, C or D.\nQuestion: {q}\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}",
+                        "answers": a
+                    })
+
+
     with open(task_config['file_path'][f'{run_mode}_file_path'], "r", encoding="utf-8") as f:
         for line in f:
             data = json.loads(line)
@@ -71,19 +95,37 @@ def get_test_df(task, run_mode, task_config):
                 q = data.get("question")
                 a = data.get("answer")  # could be str or list
                 test_df.append({"question": q, "answers": a})
+
             elif task == "PIQA":
                 q = data.get("question")
                 choice_A = data.get("A")
                 choice_B = data.get("B")
                 a = data.get("answer")  # could be str or list
-                test_df.append({"question": q + "\nA. " + choice_A + "\nB. " + choice_B, "answers": a})
+                test_df.append({
+                    "question": f"{q}\nA. {choice_A}\nB. {choice_B}",
+                    "answers": a
+                })
+
+            elif task == "ARC-c":
+                q = data.get("question")
+                choice_A = data.get("A")
+                choice_B = data.get("B")
+                choice_C = data.get("C")
+                choice_D = data.get("D")
+                a = data.get("answer")  # could be str or list
+                test_df.append({
+                    "question": f"Answer the question by replying A, B, C or D.\nQuestion: {q}\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}",
+                    "answers": a
+                })
+
             else:
                 raise ValueError(f"Unsupported task in get_test_df: {task}")
+            
     return test_df
 
 
 def clean_answer(task, input_text):
-    if task == 'NQ' or task == 'TriviaQA' or task == 'PIQA':
+    if task in ["NQ", "TriviaQA", "PIQA", "ARC-c", "MMLU"]:
         clean_text = input_text.strip().split('\n')[0].split('<eoa>')[0].strip()
 
     elif task == 'GSM8K':
