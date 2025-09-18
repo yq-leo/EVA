@@ -31,5 +31,16 @@
             "max_new_tokens": 10,
             "per_device_batch_size": 1
         }
+    },
+    "GSM8K": {
+        "file_path": {
+            "dev_file_path": "/home/qiyu6/EVA/datasets/GSM/data/train_sample300_seed42.cleand.jsonl",
+            "test_file_path": "/home/qiyu6/EVA/datasets/GSM/data/test.cleand.jsonl",
+            "prompt_path": "/home/qiyu6/EVA/datasets/GSM/prompt.txt"
+        },
+        "run_parameter": {
+            "max_new_tokens": 512,
+            "per_device_batch_size": 1
+        }
     }
 }

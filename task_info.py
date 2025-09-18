@@ -67,7 +67,7 @@ def get_test_df(task, run_mode, task_config):
         for line in f:
             data = json.loads(line)
 
-            if task == "NQ" or task == "TriviaQA":
+            if task == "NQ" or task == "TriviaQA" or task == "GSM8K":
                 q = data.get("question")
                 a = data.get("answer")  # could be str or list
                 test_df.append({"question": q, "answers": a})
@@ -85,6 +85,15 @@ def get_test_df(task, run_mode, task_config):
 def clean_answer(task, input_text):
     if task == 'NQ' or task == 'TriviaQA' or task == 'PIQA':
         clean_text = input_text.strip().split('\n')[0].split('<eoa>')[0].strip()
+
+    elif task == 'GSM8K':
+        try:
+            clean_text = input_text.strip().split('The answer is')[1]
+            for stop_before in ["\n", "</s>", "<unk>"]:
+                clean_text = clean_text.split(stop_before)[0].strip()
+        except:
+            clean_text = ""
+            
     elif task == 'e2e':
         clean_text = input_text.strip().split('\n')[0].split('<eoa>')[0].strip()
     elif task == 'addsub' or task == 'asdiv' or task == 'gsm8k':

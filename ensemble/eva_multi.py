@@ -12,7 +12,9 @@ sys.path.append('/home/qiyu6/EVA')
 # from model_info import inst_cot_prompts
 # import task_info
 from task_info import get_test_df, clean_answer
+from eos import resolve_eos_ids
 from tqdm import tqdm
+import logging
 
 # device0 = 'cuda:0'
 # device1 = 'cuda:1'
@@ -77,10 +79,10 @@ def build_inst_prompt(task, model, question, llms_config, task_config):
     with open(prompt_path, "r", encoding="utf-8") as f:
         instruction = f.read()
     
-    if task == "GSM8K":
-        # prompt = inst_cot_prompts[model].format_map({"instruction": question})
-        prompt = llms_config[model]["inst_cot_prompt"].format_map({"instruction": question})
-        return prompt
+    # if task == "GSM8K":
+    #     # prompt = inst_cot_prompts[model].format_map({"instruction": question})
+    #     prompt = llms_config[model]["inst_cot_prompt"].format_map({"instruction": question})
+    #     return prompt
     
     # prompt_schema = prompt_schemas[model]
     # prompt_schema = llms_config[model]["prompt_schema"]
@@ -89,7 +91,7 @@ def build_inst_prompt(task, model, question, llms_config, task_config):
     # model_input_prefix = prompt_schema["input_prefix"]
     # model_input_suffix = prompt_schema["input_suffix"]
 
-    if task == "NQ" or task == "TriviaQA":
+    if task == "NQ" or task == "TriviaQA" or task == "GSM8K":
         inputs = "Question:" + question
     elif task == "PIQA":
         inputs = question
@@ -123,8 +125,8 @@ def eval_local(args, model, model_aux_list0, model_aux_list1,
                tokenizer, tokenizer_aux_list, sparse_matrix_list,
                test_df, dev_df=None, src=None, tgt=None, llms_config=None, task_config=None):
 
-    eos_token_id = model.generation_config.eos_token_id
-    predictions = []
+    # eos_token_id = model.generation_config.eos_token_id
+    eos_ids = resolve_eos_ids(tokenizer, model)
 
     if args.task == 'flores':
         example_prompt = gen_prompt(dev_df, src, tgt, 4)
@@ -140,6 +142,10 @@ def eval_local(args, model, model_aux_list0, model_aux_list1,
         if L == 0: return False
         return L <= len(seq_ids) and seq_ids[-L:].tolist() == suffix_ids
     # -------------------
+
+    pred_file = os.path.join(args.save_dir, args.mode_str, args.ensemble_method, 'pred.jsonl')
+    log_file = os.path.join(args.save_dir, args.mode_str, args.ensemble_method, 'pred.process.log')
+    logging.basicConfig(filename=log_file, level=logging.DEBUG)
 
     for obj in tqdm(test_df):
         # -------- build prompts (strings) --------
@@ -262,7 +268,7 @@ def eval_local(args, model, model_aux_list0, model_aux_list1,
             next_id_val = next_id.item()
 
             # EOS?
-            if next_id_val == eos_token_id:
+            if next_id_val in eos_ids:
                 break
 
             # >>> Append the TOKEN ID (not string) to input_ids
@@ -280,11 +286,13 @@ def eval_local(args, model, model_aux_list0, model_aux_list1,
                 break
 
             # If you must keep string prompts for aux models, decode ONLY the last token cleanly
-            if args.task != 'flores':
-                next_token_str = tokenizer.decode([next_id_val], clean_up_tokenization_spaces=False, skip_special_tokens=False)
-                for aux_idx in range(len(prompt_aux_list)):
-                    prompt_aux_list[aux_idx] = prompt_aux_list[aux_idx] + next_token_str
-                prompt = prompt + next_token_str  # keep for display/debug only
+            next_token_str = tokenizer.decode([next_id_val], clean_up_tokenization_spaces=False, skip_special_tokens=False)
+            for aux_idx in range(len(prompt_aux_list)):
+                prompt_aux_list[aux_idx] = prompt_aux_list[aux_idx] + next_token_str
+            prompt = prompt + next_token_str  # keep for display/debug only
+
+            logging.info(f"{num_of_new_tokens}, {next_token_str}")
+
 
         # -------- final decode: slice by TOKENS, not characters --------
         # full text (prompt + gen), decoded from tokens
@@ -304,16 +312,32 @@ def eval_local(args, model, model_aux_list0, model_aux_list1,
                 break
         pred_text_gen = pred_text_gen.strip()
 
-        if args.task == 'flores':
-            # if your flores formatting requires line-first answer, keep that logic here if needed
-            predictions.append(pred_text_gen.strip())
-        else:
-            predictions.append({
-                "prompt": prompt_text,
-                "pred_all": pred_text_gen,   # the continuation only
-            })
+        # if args.task == 'flores':
+        #     # if your flores formatting requires line-first answer, keep that logic here if needed
+        #     predictions.append(pred_text_gen.strip())
+        # else:
 
-    return predictions
+        # Write prediction to file
+        pred = {
+            "prompt": prompt_text,
+            "pred_all": pred_text_gen,   # the continuation only
+            "full_text": full_text,    # prompt + continuation
+        }
+
+        obj.update(pred)
+        obj["prediction"] = clean_answer(args.task, pred["pred_all"])
+
+        row = {
+            "answers": obj.get("answers"),
+            "prediction": obj.get("prediction"),
+            "question": obj.get("question"),
+            "prompt": obj.get("prompt"),
+            "pred_all": obj.get("pred_all"),
+            "full_text": obj.get("full_text"),
+        }
+
+        with open(pred_file, "a+", encoding="utf-8") as f:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
 def main(args, task_config):
@@ -358,6 +382,7 @@ def main(args, task_config):
     else:
         mode_str = "{}-{}-{}{}-top{}-{}".format(args.model, aux_model_str, args.aux_method, drop_str, str(args.topk), args.matrix_name)
     print("Mode: " + mode_str)  #nq-xx-xx-xx-xx-linear_sum-top320-filter-inst
+    args.mode_str = mode_str
 
     # if not os.path.exists(args.save_dir):
     #     os.makedirs(args.save_dir)
